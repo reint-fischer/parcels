@@ -1,9 +1,8 @@
 from parcels import FieldSet, ParticleSet, ScipyParticle, JITParticle, Kernel, Variable, StateCode
 from parcels.kernels.TEOSseawaterdensity import PolyTEOS10_bsq
 from parcels.kernels.EOSseawaterproperties import PressureFromLatDepth, PtempFromTemp, TempFromPtemp, UNESCODensity
+from parcels import ParcelsRandom
 import random as py_random
-# from parcels import random as parcels_random => this doesn't work, and we should not 'ghost' up which random module is used; the module shoudl really get a different name
-from parcels import rng as parcels_random
 import numpy as np
 import pytest
 from os import path
@@ -266,7 +265,7 @@ def test_fieldset_access(fieldset, mode):
 
 
 def random_series(npart, rngfunc, rngargs, mode):
-    random = parcels_random if mode == 'jit' else py_random
+    random = ParcelsRandom if mode == 'jit' else py_random
     random.seed(1234)
     func = getattr(random, rngfunc)
     series = [func(*rngargs) for _ in range(npart)]
@@ -288,8 +287,9 @@ def test_random_float(mode, rngfunc, rngargs, npart=10):
                        lon=np.linspace(0., 1., npart),
                        lat=np.zeros(npart) + 0.5)
     series = random_series(npart, rngfunc, rngargs, mode)
+    rnglib = 'ParcelsRandom' if mode == 'jit' else 'random'
     kernel = expr_kernel('TestRandom_%s' % rngfunc, pset,
-                         'random.%s(%s)' % (rngfunc, ', '.join([str(a) for a in rngargs])))
+                         '%s.%s(%s)' % (rnglib, rngfunc, ', '.join([str(a) for a in rngargs])))
     pset.execute(kernel, endtime=1., dt=1.)
     assert np.allclose(pset.p, series, atol=1e-9)
 
