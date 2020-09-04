@@ -2,9 +2,9 @@ from parcels import FieldSet, ParticleSet, ScipyParticle, JITParticle, Kernel, V
 from parcels.kernels.TEOSseawaterdensity import PolyTEOS10_bsq
 from parcels.kernels.EOSseawaterproperties import PressureFromLatDepth, PtempFromTemp, TempFromPtemp, UNESCODensity
 from parcels import ParcelsRandom
-import random as py_random
 import numpy as np
 import pytest
+import random as py_random
 from os import path
 import sys
 
