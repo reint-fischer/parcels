@@ -80,7 +80,9 @@ def test_ofam_particles(use_xarray):
     )
 
     pset.execute(
-        parcels.kernels.AdvectionRK4, runtime=timedelta(days=10), dt=timedelta(minutes=5)
+        parcels.kernels.AdvectionRK4,
+        runtime=timedelta(days=10),
+        dt=timedelta(minutes=5),
     )
 
     assert abs(pset[0].lon - 173) < 1

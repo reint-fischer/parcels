@@ -132,7 +132,9 @@ def test_globcurrent_time_extrapolation_error():
     )
     with pytest.raises(parcels.TimeExtrapolationError):
         pset.execute(
-            parcels.kernels.AdvectionRK4, runtime=timedelta(days=1), dt=timedelta(minutes=5)
+            parcels.kernels.AdvectionRK4,
+            runtime=timedelta(days=1),
+            dt=timedelta(minutes=5),
         )
 
 
@@ -214,7 +216,9 @@ def test_globcurrent_particle_independence(rundays=5):
     )
 
     pset1.execute(
-        parcels.kernels.AdvectionRK4, runtime=timedelta(days=rundays), dt=timedelta(minutes=5)
+        parcels.kernels.AdvectionRK4,
+        runtime=timedelta(days=rundays),
+        dt=timedelta(minutes=5),
     )
 
     assert np.allclose([pset0[-1].lon, pset0[-1].lat], [pset1[-1].lon, pset1[-1].lat])
@@ -230,7 +234,10 @@ def test_globcurrent_pset_fromfile(dt, pid_offset, tmpdir):
     pset = parcels.ParticleSet(fieldset, pclass=parcels.Particle, lon=25, lat=-35)
     pfile = pset.ParticleFile(filename, outputdt=timedelta(hours=6))
     pset.execute(
-        parcels.kernels.AdvectionRK4, runtime=timedelta(days=1), dt=dt, output_file=pfile
+        parcels.kernels.AdvectionRK4,
+        runtime=timedelta(days=1),
+        dt=dt,
+        output_file=pfile,
     )
     pfile.write_latest_locations(pset, max(pset.time_nextloop))
 

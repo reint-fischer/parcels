@@ -284,7 +284,9 @@ def test_periodic_and_computeTimeChunk_eddies():
         particle.dlon -= 5 * particle.dt / 1e5
         particle.dlat -= 3 * particle.dt / 1e5
 
-    kernels = pset.Kernel(parcels.kernels.AdvectionRK4) + slowlySouthWestward + periodicBC
+    kernels = (
+        pset.Kernel(parcels.kernels.AdvectionRK4) + slowlySouthWestward + periodicBC
+    )
     pset.execute(kernels, runtime=timedelta(days=6), dt=timedelta(hours=1))
 
 
