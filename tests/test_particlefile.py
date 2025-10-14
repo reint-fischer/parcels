@@ -363,6 +363,20 @@ def test_pset_execute_outputdt_forwards(fieldset):
     assert np.all(ds.isel(trajectory=0).time.diff(dim="obs").values == np.timedelta64(outputdt))
 
 
+def test_pset_execute_output_time_forwards(fieldset):
+    """Testing output times start at initial time and end at initial time + runtime."""
+    outputdt = np.timedelta64(1, "h")
+    runtime = np.timedelta64(5, "h")
+    dt = np.timedelta64(5, "m")
+
+    ds = setup_pset_execute(fieldset=fieldset, outputdt=outputdt, execute_kwargs=dict(runtime=runtime, dt=dt))
+
+    assert (
+        ds.time[0, 0].values == fieldset.time_interval.left
+        and ds.time[0, -1].values == fieldset.time_interval.left + runtime
+    )
+
+
 @pytest.mark.skip(reason="backwards in time not yet working")
 def test_pset_execute_outputdt_backwards(fieldset):
     """Testing output data dt matches outputdt in backwards time."""
