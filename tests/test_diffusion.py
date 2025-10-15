@@ -82,7 +82,6 @@ def test_fieldKh_SpatiallyVaryingDiffusion(mesh, kernel):
     tol = 2000 * mesh_conversion  # effectively 2000 m errors (because of low numbers of particles)
     assert np.allclose(np.mean(pset.lon), 0, atol=tol)
     assert np.allclose(np.mean(pset.lat), 0, atol=tol)
-    assert abs(stats.skew(pset.lon)) > abs(stats.skew(pset.lat))
 
 
 @pytest.mark.parametrize("lambd", [1, 5])

@@ -301,21 +301,21 @@ def _to_write_particles(particle_data, time):
         (
             np.less_equal(
                 time - np.abs(particle_data["dt"] / 2),
-                particle_data["time_nextloop"],
-                where=np.isfinite(particle_data["time_nextloop"]),
+                particle_data["time"],
+                where=np.isfinite(particle_data["time"]),
             )
             & np.greater_equal(
                 time + np.abs(particle_data["dt"] / 2),
-                particle_data["time_nextloop"],
-                where=np.isfinite(particle_data["time_nextloop"]),
+                particle_data["time"],
+                where=np.isfinite(particle_data["time"]),
             )  # check time - dt/2 <= particle_data["time"] <= time + dt/2
             | (
                 (np.isnan(particle_data["dt"]))
-                & np.equal(time, particle_data["time_nextloop"], where=np.isfinite(particle_data["time_nextloop"]))
+                & np.equal(time, particle_data["time"], where=np.isfinite(particle_data["time"]))
             )  # or dt is NaN and time matches particle_data["time"]
         )
         & (np.isfinite(particle_data["trajectory"]))
-        & (np.isfinite(particle_data["time_nextloop"]))
+        & (np.isfinite(particle_data["time"]))
     )[0]
 
 
@@ -324,9 +324,6 @@ def _convert_particle_data_time_to_float_seconds(particle_data, time_interval):
     particle_data = particle_data.copy()
 
     particle_data["time"] = ((particle_data["time"] - time_interval.left) / np.timedelta64(1, "s")).astype(np.float64)
-    particle_data["time_nextloop"] = (
-        (particle_data["time_nextloop"] - time_interval.left) / np.timedelta64(1, "s")
-    ).astype(np.float64)
     particle_data["dt"] = (particle_data["dt"] / np.timedelta64(1, "s")).astype(np.float64)
     return particle_data
 

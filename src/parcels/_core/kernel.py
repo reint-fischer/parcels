@@ -117,15 +117,14 @@ class Kernel:
             particles.lon += particles.dlon
             particles.lat += particles.dlat
             particles.z += particles.dz
+            particles.time += particles.dt
 
             particles.dlon = 0
             particles.dlat = 0
             particles.dz = 0
 
-            particles.time = particles.time_nextloop
-
         def UpdateTime(particles, fieldset):  # pragma: no cover
-            particles.time_nextloop = particles.time + particles.dt
+            particles.time_nextloop = particles.time + particles.dt  # TODO remove
 
         self._pyfuncs = (Setcoords + self + UpdateTime)._pyfuncs
 
@@ -239,7 +238,7 @@ class Kernel:
             self._positionupdate_kernels_added = True
 
         while (len(pset) > 0) and np.any(np.isin(pset.state, [StatusCode.Evaluate, StatusCode.Repeat])):
-            time_to_endtime = compute_time_direction * (endtime - pset.time_nextloop)
+            time_to_endtime = compute_time_direction * (endtime - pset.time)
 
             if all(time_to_endtime <= 0):
                 return StatusCode.Success

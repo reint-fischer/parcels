@@ -518,7 +518,7 @@ class ParticleSet:
                 ) from e
 
         start_time, end_time = _get_simulation_start_and_end_times(
-            self.fieldset.time_interval, self._data["time_nextloop"], runtime, endtime, sign_dt
+            self.fieldset.time_interval, self._data["time"], runtime, endtime, sign_dt
         )
 
         # Set the time of the particles if it hadn't been set on initialisation
@@ -536,7 +536,11 @@ class ParticleSet:
             pbar = tqdm(total=(end_time - start_time) / np.timedelta64(1, "s"), file=sys.stdout)
             pbar.set_description("Integration time: " + str(start_time))
 
-        next_output = start_time + sign_dt * outputdt if output_file else None
+        next_output = start_time if output_file else None
+
+        # TODO clean up two lines below: -dt is needed because in SetCoords dt gets added again
+        start_time -= dt
+        self._data["time"][:] -= dt
 
         time = start_time
         while sign_dt * (time - end_time) < 0:

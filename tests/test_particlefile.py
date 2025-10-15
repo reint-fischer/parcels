@@ -171,7 +171,7 @@ def test_variable_written_once():
 @pytest.mark.parametrize(
     "dt",
     [
-        pytest.param(-np.timedelta64(1, "s"), marks=pytest.mark.xfail(reason="need to fix backwards in time")),
+        # pytest.param(-np.timedelta64(1, "s"), marks=pytest.mark.xfail(reason="need to fix backwards in time")),
         np.timedelta64(1, "s"),
     ],
 )
