@@ -234,13 +234,12 @@ def test_dont_run_particles_outside_starttime(fieldset):
     # Test forward in time (note third particle is outside endtime)
     start_times = [fieldset.time_interval.left + np.timedelta64(t, "s") for t in [0, 2, 10]]
     endtime = fieldset.time_interval.left + np.timedelta64(8, "s")
-    dt = np.timedelta64(1, "s")
 
     def AddLon(particles, fieldset):  # pragma: no cover
         particles.lon += 1
 
     pset = ParticleSet(fieldset, lon=np.zeros(len(start_times)), lat=np.zeros(len(start_times)), time=start_times)
-    pset.execute(AddLon, dt=dt, endtime=endtime)
+    pset.execute(AddLon, dt=np.timedelta64(1, "s"), endtime=endtime)
 
     np.testing.assert_array_equal(pset.lon, [9, 7, 0])
     assert pset.time[0:1] == endtime
@@ -251,7 +250,7 @@ def test_dont_run_particles_outside_starttime(fieldset):
     endtime = fieldset.time_interval.right - np.timedelta64(8, "s")
 
     pset = ParticleSet(fieldset, lon=np.zeros(len(start_times)), lat=np.zeros(len(start_times)), time=start_times)
-    pset.execute(AddLon, dt=-dt, endtime=endtime)
+    pset.execute(AddLon, dt=-np.timedelta64(1, "s"), endtime=endtime)
 
     np.testing.assert_array_equal(pset.lon, [9, 7, 0])
     assert pset.time[0:1] == endtime
