@@ -242,23 +242,6 @@ class ParticleFile:
 
         particle_data["obs_written"][indices_to_write] = obs + 1
 
-    def write_latest_locations(self, pset, time):
-        """Write the current (latest) particle locations to zarr file.
-        This can be useful at the end of a pset.execute(), when the last locations are not written yet.
-        Note that this only updates the locations, not any of the other Variables. Therefore, use with care.
-
-        Parameters
-        ----------
-        pset :
-            ParticleSet object to write
-        time :
-            Time at which to write ParticleSet. Note that typically this would be pset.time + pset.dt
-        """
-        for var in ["lon", "lat", "z"]:
-            pset._data[f"{var}"] += pset._data[f"d{var}"]
-        pset._data["time"] += pset._data["dt"]
-        self.write(pset, time)
-
 
 def _get_store_from_pathlike(path: Path | str) -> DirectoryStore:
     path = str(Path(path))  # Ensure valid path, and convert to string
