@@ -14,7 +14,6 @@ from parcels import (
     ParticleFile,
     ParticleSet,
     StatusCode,
-    OutsideTimeInterval,
     UxGrid,
     Variable,
     VectorField,
