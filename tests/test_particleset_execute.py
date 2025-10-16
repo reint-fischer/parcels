@@ -207,7 +207,7 @@ def test_pset_multi_execute(fieldset, with_delete, npart=10, n=5):
         particles.dlat += 0.1
 
     k_add = pset.Kernel(AddLat)
-    for _ in range(n + 1):
+    for _ in range(n):
         pset.execute(k_add, runtime=np.timedelta64(1, "s"), dt=np.timedelta64(1, "s"))
         if with_delete:
             pset.remove_indices(len(pset) - 1)
@@ -244,7 +244,7 @@ def test_dont_run_particles_outside_starttime(fieldset):
 
     np.testing.assert_array_equal(pset.lon, [9, 7, 0])
     assert pset.time[0:1] == endtime
-    assert pset.time[2] == start_times[2] - dt  # this particle has not been executed  # TODO check why -dt is needed
+    assert pset.time[2] == start_times[2]  # this particle has not been executed
 
     # Test backward in time (note third particle is outside endtime)
     start_times = [fieldset.time_interval.right - np.timedelta64(t, "s") for t in [0, 2, 10]]
@@ -255,7 +255,7 @@ def test_dont_run_particles_outside_starttime(fieldset):
 
     np.testing.assert_array_equal(pset.lon, [9, 7, 0])
     assert pset.time[0:1] == endtime
-    assert pset.time[2] == start_times[2] + dt  # this particle has not been executed
+    assert pset.time[2] == start_times[2]  # this particle has not been executed
 
 
 def test_some_particles_throw_outofbounds(zonal_flow_fieldset):

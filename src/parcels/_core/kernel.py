@@ -233,10 +233,6 @@ class Kernel:
 
         pset._data["state"][:] = StatusCode.Evaluate
 
-        if not self._positionupdate_kernels_added:
-            self.add_positionupdate_kernels()
-            self._positionupdate_kernels_added = True
-
         while (len(pset) > 0) and np.any(np.isin(pset.state, [StatusCode.Evaluate, StatusCode.Repeat])):
             time_to_endtime = compute_time_direction * (endtime - pset.time)
 
@@ -282,5 +278,9 @@ class Kernel:
                         error_func(pset[inds].time)
                     else:
                         error_func(pset[inds].z, pset[inds].lat, pset[inds].lon)
+
+            if not self._positionupdate_kernels_added:
+                self.add_positionupdate_kernels()
+                self._positionupdate_kernels_added = True
 
         return pset

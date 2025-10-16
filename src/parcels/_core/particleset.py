@@ -538,10 +538,6 @@ class ParticleSet:
 
         next_output = start_time if output_file else None
 
-        # TODO clean up two lines below: -dt is needed because in SetCoords dt gets added again
-        start_time -= dt
-        self._data["time"][:] -= dt
-
         time = start_time
         while sign_dt * (time - end_time) < 0:
             if next_output is not None:
