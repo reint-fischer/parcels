@@ -74,7 +74,7 @@ pytest-cov = "*"
 
 [feature.test.tasks]
 tests = "pytest"
-tests-notebooks = "pytest --nbval-lax -k 'argo' docs/examples"
+tests-notebooks = "pytest --nbval-lax docs/examples"
 
 
 [feature.notebooks.dependencies]
