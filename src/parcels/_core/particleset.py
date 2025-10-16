@@ -124,7 +124,6 @@ class ParticleSet:
                 lat=lat,
                 z=z,
                 time=time,
-                time_nextloop=time,
                 trajectory=trajectory_ids,
             ),
         )
@@ -524,7 +523,6 @@ class ParticleSet:
         # Set the time of the particles if it hadn't been set on initialisation
         if np.isnat(self._data["time"]).any():
             self._data["time"][:] = start_time
-            self._data["time_nextloop"][:] = start_time
 
         outputdt = output_file.outputdt if output_file else None
 

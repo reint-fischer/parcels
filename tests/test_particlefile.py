@@ -69,12 +69,10 @@ def test_pfile_array_remove_particles(fieldset, tmp_zarrfile):
     )
     pfile = ParticleFile(tmp_zarrfile, outputdt=np.timedelta64(1, "s"))
     pset._data["time"][:] = fieldset.time_interval.left
-    pset._data["time_nextloop"][:] = fieldset.time_interval.left
     pfile.write(pset, time=fieldset.time_interval.left)
     pset.remove_indices(3)
     new_time = fieldset.time_interval.left + np.timedelta64(1, "D")
     pset._data["time"][:] = new_time
-    pset._data["time_nextloop"][:] = new_time
     pfile.write(pset, new_time)
     ds = xr.open_zarr(tmp_zarrfile, decode_cf=False)
     timearr = ds["time"][:]
@@ -446,7 +444,6 @@ def test_particlefile_write_particle_data(tmp_store):
         time_interval=time_interval,
         initial={
             "time": np.full(nparticles, fill_value=left),
-            "time_nextloop": np.full(nparticles, fill_value=left),
             "lon": initial_lon,
             "dt": np.full(nparticles, fill_value=1.0),
             "trajectory": np.arange(nparticles),

@@ -75,7 +75,7 @@ class Kernel:
         self._fieldset = fieldset
         self._ptype = ptype
 
-        self._positionupdate_kernels_added = False
+        self._positionupdate_kernel_added = False
 
         for f in pyfuncs:
             self.check_fieldsets_in_kernels(f)
@@ -111,9 +111,9 @@ class Kernel:
         if len(indices) > 0:
             pset.remove_indices(indices)
 
-    def add_positionupdate_kernels(self):
+    def add_positionupdate_kernel(self):
         # Adding kernels that set and update the coordinate changes
-        def Setcoords(particles, fieldset):  # pragma: no cover
+        def PositionUpdate(particles, fieldset):  # pragma: no cover
             particles.lon += particles.dlon
             particles.lat += particles.dlat
             particles.z += particles.dz
@@ -123,10 +123,7 @@ class Kernel:
             particles.dlat = 0
             particles.dz = 0
 
-        def UpdateTime(particles, fieldset):  # pragma: no cover
-            particles.time_nextloop = particles.time + particles.dt  # TODO remove
-
-        self._pyfuncs = (Setcoords + self + UpdateTime)._pyfuncs
+        self._pyfuncs = (PositionUpdate + self)._pyfuncs
 
     def check_fieldsets_in_kernels(self, pyfunc):  # TODO v4: this can go into another method? assert_is_compatible()?
         """
@@ -279,8 +276,8 @@ class Kernel:
                     else:
                         error_func(pset[inds].z, pset[inds].lat, pset[inds].lon)
 
-            if not self._positionupdate_kernels_added:
-                self.add_positionupdate_kernels()
-                self._positionupdate_kernels_added = True
+            if not self._positionupdate_kernel_added:
+                self.add_positionupdate_kernel()
+                self._positionupdate_kernel_added = True
 
         return pset

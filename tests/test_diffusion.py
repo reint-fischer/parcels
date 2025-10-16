@@ -77,11 +77,12 @@ def test_fieldKh_SpatiallyVaryingDiffusion(mesh, kernel):
 
     np.random.seed(1636)
     pset = ParticleSet(fieldset=fieldset, lon=np.zeros(npart), lat=np.zeros(npart))
-    pset.execute(pset.Kernel(kernel), runtime=np.timedelta64(4, "h"), dt=np.timedelta64(1, "h"))
+    pset.execute(pset.Kernel(kernel), runtime=np.timedelta64(3, "h"), dt=np.timedelta64(1, "h"))
 
     tol = 2000 * mesh_conversion  # effectively 2000 m errors (because of low numbers of particles)
     assert np.allclose(np.mean(pset.lon), 0, atol=tol)
     assert np.allclose(np.mean(pset.lat), 0, atol=tol)
+    assert abs(stats.skew(pset.lon)) > abs(stats.skew(pset.lat))
 
 
 @pytest.mark.parametrize("lambd", [1, 5])
