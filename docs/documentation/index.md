@@ -34,7 +34,7 @@ The tutorials written for Parcels v3 are currently being updated for Parcels v4.
 :caption: Creating ParticleSets
 :name: tutorial-particlesets
 
-<!-- ../examples/tutorial_delaystart.ipynb -->
+../examples/tutorial_delaystart.ipynb
 ```
 
 ```{nbgallery}
