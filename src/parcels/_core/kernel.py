@@ -276,6 +276,7 @@ class Kernel:
                     else:
                         error_func(pset[inds].z, pset[inds].lat, pset[inds].lon)
 
+            # Only add PositionUpdate kernel at the end of the first execute call to avoid adding dt to time too early
             if not self._positionupdate_kernel_added:
                 self.add_positionupdate_kernel()
                 self._positionupdate_kernel_added = True

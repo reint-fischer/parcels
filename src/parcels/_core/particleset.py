@@ -551,7 +551,7 @@ class ParticleSet:
                     if output_file:
                         output_file.write(self, next_output)
                     if np.isfinite(outputdt):
-                        next_output += outputdt
+                        next_output += outputdt * sign_dt
 
             if verbose_progress:
                 pbar.set_description("Integration time: " + str(time))

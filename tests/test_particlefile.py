@@ -166,13 +166,7 @@ def test_variable_written_once():
     ...
 
 
-@pytest.mark.parametrize(
-    "dt",
-    [
-        # pytest.param(-np.timedelta64(1, "s"), marks=pytest.mark.xfail(reason="need to fix backwards in time")),
-        np.timedelta64(1, "s"),
-    ],
-)
+@pytest.mark.parametrize("dt", [-np.timedelta64(1, "s"), np.timedelta64(1, "s")])
 @pytest.mark.parametrize("maxvar", [2, 4, 10])
 def test_pset_repeated_release_delayed_adding_deleting(fieldset, tmp_zarrfile, dt, maxvar):
     """Tests that if particles are released and deleted based on age that resulting output file is correct."""
@@ -190,7 +184,7 @@ def test_pset_repeated_release_delayed_adding_deleting(fieldset, tmp_zarrfile, d
         lon=np.zeros(npart),
         lat=np.zeros(npart),
         pclass=MyParticle,
-        time=fieldset.time_interval.left + np.array([np.timedelta64(i, "s") for i in range(npart)]),
+        time=fieldset.time_interval.left + np.array([np.timedelta64(i + 1, "s") for i in range(npart)]),
     )
     pfile = ParticleFile(tmp_zarrfile, outputdt=abs(dt), chunks=(1, 1))
 
