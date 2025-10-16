@@ -121,7 +121,7 @@ def test__particles_init_time():
     assert pset[0].time - pset4[0].time == 0
 
 
-def test_globcurrent_time_extrapolation_error():
+def test_globcurrent_outside_time_interval_error():
     fieldset = set_globcurrent_fieldset()
     pset = parcels.ParticleSet(
         fieldset,
