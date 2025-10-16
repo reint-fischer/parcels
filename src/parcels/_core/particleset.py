@@ -515,6 +515,8 @@ class ParticleSet:
                 raise ValueError(
                     f"The runtime must be a datetime.timedelta or np.timedelta64 object. Got {type(runtime)}"
                 ) from e
+            if runtime < np.timedelta64(0, "s"):
+                raise ValueError(f"The runtime must be a non-negative timedelta. Got {runtime=!r}")
 
         start_time, end_time = _get_simulation_start_and_end_times(
             self.fieldset.time_interval, self._data["time"], runtime, endtime, sign_dt
